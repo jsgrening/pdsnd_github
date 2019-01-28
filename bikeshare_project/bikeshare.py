@@ -200,9 +200,9 @@ def display_raw_data(df):
     # removes the added columns from load_data function in order to present original dataframe
     df = df.drop(['Month', 'Day of Week'], axis=1)
     
-    view_data = input('\nWould you like to view the raw data? Enter yes or no.\n')
+    view_data = input('\nWould you like to view the raw data? Enter Y or N.\n').lower()
     while True:
-        if view_data.lower() == 'yes':
+        if view_data == 'y':
             # displays lines of dataframe within given indices
             print('\n{}'.format(df.iloc[idxa:idxb]))
             idxa += 5
@@ -210,7 +210,7 @@ def display_raw_data(df):
         else:
             break
         print('-'*40)
-        view_data = input('\nView next five lines? Enter yes or no.\n')
+        view_data = input('\nView next five lines? Enter Y or N.\n')
 
     print('-'*40)
           
@@ -226,8 +226,10 @@ def main():
         user_stats(df)
         display_raw_data(df)
 
-        restart = input('\nWould you like to restart? Enter yes or no.\n')
-        if restart.lower() != 'yes':
+        restart = input('\nWould you like to restart? Enter Y or N.\n').lower()
+        if restart == 'y':
+            print('-'*40 + '\n')
+        else:
             break
 
 
