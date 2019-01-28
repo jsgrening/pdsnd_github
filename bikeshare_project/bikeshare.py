@@ -88,7 +88,12 @@ def load_data(city, month, day):
 
 
 def time_stats(df):
-    """Displays statistics on the most frequent times of travel."""
+    """
+    Displays statistics on the most frequent times of travel.
+    
+    Arg:
+        df - Pandas DataFrame
+    """
 
     print('\nCalculating The Most Frequent Times of Travel...\n')
     start_time = time.time()
@@ -136,7 +141,12 @@ def station_stats(df):
 
 
 def trip_duration_stats(df):
-    """Displays statistics on the total and average trip duration."""
+    """
+    Displays statistics on the total and average trip duration.
+    
+    Arg:
+        df - Pandas DataFrame
+    """
 
     print('\nCalculating Trip Duration...\n')
     start_time = time.time()
@@ -154,7 +164,12 @@ def trip_duration_stats(df):
 
 
 def user_stats(df):
-    """Displays statistics on bikeshare users."""
+    """
+    Displays statistics on bikeshare users.
+    
+    Arg:
+        df - Pandas DataFrame
+    """
 
     print('\nCalculating User Stats...\n')
     start_time = time.time()
@@ -169,7 +184,7 @@ def user_stats(df):
         # displays counts of gender
         gender = df['Gender'].value_counts()
         print('Male users: {}'.format(gender['Male']))
-        print('Female users: {}'.format(gender['Female']))        
+        print('Female users: {}'.format(gender['Female']))     
     except KeyError as e:
         print("{} column doesn't exist in this dataset!".format(e))   
         
@@ -195,7 +210,13 @@ def user_stats(df):
 
     
 def display_raw_data(df):
-    """Asks user to view raw data, displays five lines of data at a time."""
+    """
+    Asks user to view raw data. Displays five lines of data; continues to 
+    prompt user to display five more lines until 'yes' is not entered.
+    
+    Arg:
+        df - Pandas DataFrame
+    """
     idxa, idxb = (0, 5)
     # removes the added columns from load_data function in order to present original dataframe
     df = df.drop(['Month', 'Day of Week'], axis=1)
@@ -218,6 +239,7 @@ def display_raw_data(df):
 def main():
     while True:
         city, month, day = get_filters()
+        # Pandas dataframe based on loaded data is set to df variable
         df = load_data(city, month, day)
 
         time_stats(df)
