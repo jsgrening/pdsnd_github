@@ -15,33 +15,31 @@ def get_filters():
         (str) month - name of the month to filter by, or "all" to apply no month filter
         (str) day - name of the day of week to filter by, or "all" to apply no day filter
     """
+    
     print('Hello! Let\'s explore some US bikeshare data!')
     # gets user input for city (chicago, new york city, washington)
     while True:
         cities = ['chicago', 'new york city', 'washington']
         city = input('\nWould you like to see data from Chicago, New York City, or Washington?\n').lower()
-        if city not in cities:
-            print('\nERROR: Please enter a valid city!')
-        else:
+        if city in cities:
             break
+        print('\nERROR: Please enter a valid city!')
 
     # gets user input for month (all, january, february, ... , june)
     while True:
         months = ['all', 'january', 'february', 'march', 'april', 'may', 'june']
         month = input('\nFilter by January, February, March, April, May, June, or All?\n').lower()
-        if month not in months:
-            print('\nERROR: Please enter a valid month!')
-        else:
+        if month in months:
             break
+        print('\nERROR: Please enter a valid month!')
 
     # gets user input for day of week (all, monday, tuesday, ... sunday)
     while True:
         day_of_week = ['all', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
         day = input('\nFilter by Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday, or All?\n').lower()
-        if day not in day_of_week:
-            print('\nERROR: Please enter a valid day of the week!')
-        else:
+        if day in day_of_week:
             break
+        print('\nERROR: Please enter a valid day of the week!')
 
     print('-'*40)
     return city, month, day
@@ -58,7 +56,6 @@ def load_data(city, month, day):
     Returns:
         df - Pandas DataFrame containing city data filtered by month and day
     """
-
 
     # load data file into a dataframe
     df = pd.read_csv(CITY_DATA[city])
@@ -99,17 +96,13 @@ def time_stats(df):
     start_time = time.time()
 
     # displays the most common month
-    common_month = df['Month'].mode()[0]
-    print('Most popular month: {}'.format(common_month))
+    print('Most popular month: {}'.format(df['Month'].mode()[0]))
 
     # displays the most common day of week
-    common_day_of_week = df['Day of Week'].mode()[0]
-    print('Most popular day: {}'.format(common_day_of_week))
+    print('Most popular day: {}'.format(df['Day of Week'].mode()[0]))
 
     # displays the most common start hour
-    common_hour = df['Start Time'].dt.hour.mode()[0]
-    print('Most popular start hour: {}'.format(common_hour))
-    
+    print('Most popular start hour: {}'.format(df['Start Time'].dt.hour.mode()[0]))
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
@@ -122,17 +115,15 @@ def station_stats(df):
     start_time = time.time()
 
     # displays most commonly used start station
-    common_start_station = df['Start Station'].mode()[0]
-    print('Start station: {}'.format(common_start_station))
+    print('Start station: {}'.format(df['Start Station'].mode()[0]))
     
     # displays most commonly used end station
-    common_end_station = df['End Station'].mode()[0]
-    print('End station: {}'.format(common_end_station))
+    print('End station: {}'.format(df['End Station'].mode()[0]))
     
-    # displays combinations of start station and end station trip
-    combination = df.groupby(['Start Station', 'End Station']).size().reset_index(name='Count')
-    # dataframe ct (abbv. common trip) holds row where the count of the combination equals the max of trips
-    ct = combination.loc[combination['Count'] == combination['Count'].max()]
+    # dataframe 'pairs' contains Start Station, End Station, and Counts of different combinations of trips
+    pairs = df.groupby(['Start Station', 'End Station']).size().reset_index(name='Count')
+    # dataframe 'ct' (abbv. common trip) holds row where the count of the combination equals the max of trips
+    ct = pairs.loc[pairs['Count'] == pairs['Count'].max()]
     # displays most frequent combination and amount of times trip was taken
     print('Most popular trip: {} >> {}, taken {} time(s)'.format(ct.iloc[0]['Start Station'], ct.iloc[0]['End Station'], ct.iloc[0]['Count']))
 
@@ -196,7 +187,7 @@ def user_stats(df):
         recent_birth = df['Birth Year'].max()
         print('Recent birth year: {}'.format(int(recent_birth)))
         
-        # creates dataframe with only the birth year and the amount of times the given birth year appears
+        # creates dataframe 'births' with only the birth year and the amount of times the given birth year appears
         births = df.groupby('Birth Year')['Birth Year'].count().reset_index(name='Count')
         # dataframe cb (abbv. common birth) holds the row where the count of the births equals the most births in a single year
         cb = births.loc[births['Count'] == births['Count'].max()]
@@ -221,9 +212,9 @@ def display_raw_data(df):
     # removes the added columns from load_data function in order to present original dataframe
     df = df.drop(['Month', 'Day of Week'], axis=1)
     
-    view_data = input('\nWould you like to view the raw data? Enter yes or no.\n')
+    view_data = input('\nWould you like to view the raw data? Enter Y or N.\n').lower()
     while True:
-        if view_data.lower() == 'yes':
+        if view_data == 'y':
             # displays lines of dataframe within given indices
             print('\n{}'.format(df.iloc[idxa:idxb]))
             idxa += 5
@@ -231,7 +222,7 @@ def display_raw_data(df):
         else:
             break
         print('-'*40)
-        view_data = input('\nView next five lines? Enter yes or no.\n')
+        view_data = input('\nView next five lines? Enter Y or N.\n').lower()
 
     print('-'*40)
           
@@ -248,8 +239,10 @@ def main():
         user_stats(df)
         display_raw_data(df)
 
-        restart = input('\nWould you like to restart? Enter yes or no.\n')
-        if restart.lower() != 'yes':
+        restart = input('\nWould you like to restart? Enter Y or N.\n').lower()
+        if restart == 'y':
+            print('-'*40 + '\n')
+        else:
             break
 
 
