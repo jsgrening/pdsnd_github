@@ -15,33 +15,31 @@ def get_filters():
         (str) month - name of the month to filter by, or "all" to apply no month filter
         (str) day - name of the day of week to filter by, or "all" to apply no day filter
     """
+    
     print('Hello! Let\'s explore some US bikeshare data!')
     # gets user input for city (chicago, new york city, washington)
     while True:
         cities = ['chicago', 'new york city', 'washington']
         city = input('\nWould you like to see data from Chicago, New York City, or Washington?\n').lower()
-        if city not in cities:
-            print('\nERROR: Please enter a valid city!')
-        else:
+        if city in cities:
             break
+        print('\nERROR: Please enter a valid city!')
 
     # gets user input for month (all, january, february, ... , june)
     while True:
         months = ['all', 'january', 'february', 'march', 'april', 'may', 'june']
         month = input('\nFilter by January, February, March, April, May, June, or All?\n').lower()
-        if month not in months:
-            print('\nERROR: Please enter a valid month!')
-        else:
+        if month in months:
             break
+        print('\nERROR: Please enter a valid month!')
 
     # gets user input for day of week (all, monday, tuesday, ... sunday)
     while True:
         day_of_week = ['all', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
         day = input('\nFilter by Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday, or All?\n').lower()
-        if day not in day_of_week:
-            print('\nERROR: Please enter a valid day of the week!')
-        else:
+        if day in day_of_week:
             break
+        print('\nERROR: Please enter a valid day of the week!')
 
     print('-'*40)
     return city, month, day
@@ -58,7 +56,6 @@ def load_data(city, month, day):
     Returns:
         df - Pandas DataFrame containing city data filtered by month and day
     """
-
 
     # load data file into a dataframe
     df = pd.read_csv(CITY_DATA[city])
